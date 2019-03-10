@@ -1,3 +1,5 @@
+#to host a localhost web server
+
 import flask
 from flask import request, jsonify
 
