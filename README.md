@@ -3,15 +3,15 @@ Verified codes dumped on esp32 using R_Pi
 
 #Before uploading the firmware, please make sure the Pi is up-to-date.  From a terminal, type the following:
 
-$ sudo apt-get update && sudo apt-get upgrade
+sudo apt-get update && sudo apt-get upgrade
 
 #A utility called ESPTool is used to upload the MicroPython firmware to the ESP32.  It is installed using pip3 to target Python3:
 
-$ sudo pip3 install esptool
+sudo pip3 install esptool
 
 #Next the USB port needs to be determined using :
 
-$ dmesg | grep ttyUSB
+dmesg | grep ttyUSB
 
 #The results should show a CP210x UART to USB bridge attached to a USB port.  Below the port is ttyUSB0.
 
@@ -19,11 +19,11 @@ $ dmesg | grep ttyUSB
 
 #The ESPTool flash_id command can be used to ensure everything is working.The port name returned by the dmesg command above.
 
-$ esptool.py --port /dev/ttyUSB0 flash_id
+esptool.py --port /dev/ttyUSB0 flash_id
 
-# Expected output of the above command
+#Expected outcome of the first command
 
-$ esptool.py v2.0.1
+esptool.py v2.0.1
 Connecting........_
 Detecting chip type... ESP32
 Chip is ESP32D0WDQ6 (revision 0)
@@ -37,7 +37,7 @@ Hard resetting...
 
 #Before uploading the firmware it is recommended to erase the ESP32, which can also be done with the ESPTool:
 
-$ esptool.py --port /dev/ttyUSB0 erase_flash
+esptool.py --port /dev/ttyUSB0 erase_flash
 
 #A copy of the MicroPython firmware is required.  You could just download a ready-to-go daily build from :
 http://micropython.org/download#esp32
@@ -47,27 +47,31 @@ http://micropython.org/download#esp32
 
 #The starting address now needs to be 0x1000 instead of zero.
 
-$ esptool.py --port /dev/ttyUSB0 write_flash 0x1000 <path to firmware file>
+esptool.py --port /dev/ttyUSB0 write_flash 0x1000 <path to firmware file>
 
 #Ideally you want a program that provides a REPL terminal and also can perform file management.  We'll be using rshell.  It can be installed using pip:
 
-$ pip3 install rshell
+sudo pip3 install rshell
 
 #This simple program will run on the Raspberry Pi and allow you to access the REPL terminal on the ESP32.  It also provides file management to transfer and manipulate files on both the Pi and the ESP32.  To start rshell, type rshell and specify 30 for the buffer size and your USB port:
 
-$ rshell --buffer-size=30 -p /dev/ttyUSB0 
+/home/ankita/Documents/micropython>rshell --buffer-size=30 -p /dev/ttyUSB0 
 
-#The first prompt can be used to execute file commands.  
-#The boot.py file is automatically run at startup and contains low level code to set up the board and finish booting.  You typically don’t want to edit it.  However, you can add a file called main.py if you need your own code to run at start up after the boot.py.
+#The first prompt can be used to execute file commands. We enter the shell through which we can dump files onto esp32The output looks like:  #The boot.py file is automatically run at startup and contains low level code to set up the board and finish booting.  You typically don’t want to edit it.  However, you can add a file called main.py if you need your own code to run at start up after the boot.py.
 
 #Type repl to open the MicroPython programing environment.  The terminal will now accept Python code.  For example, print hello world, outputs hello world.
 
-/home/ankita/Documents/micropython> repl
+/home/ankita/Documents/micropython>repl
+
+#The output:
+
 Entering REPL. Use Control-X to exit.
 >
 MicroPython v1.10-54-g43a894fb4 on 2019-02-07; ESP32 module with ESP32
 Type "help()" for more information.
->>> 
+>>>
+
+#We can try printing "Hello World"
 >>> print('Hello World')
 Hello World
 
