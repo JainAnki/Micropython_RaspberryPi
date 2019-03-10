@@ -1,8 +1,8 @@
 
 import network
-
-ssid = "XxX"
-password =  "jain12ankita"
+#Enter your network details
+ssid = ""
+password =  ""
 
 station = network.WLAN(network.STA_IF)
 
