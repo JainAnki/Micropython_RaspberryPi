@@ -11,7 +11,7 @@ sudo pip3 install esptool
 
 #Next the USB port needs to be determined using :
 
-dmesg | grep ttyUSB
+pi@raspberrypi:~/Desktop/Ankita $ dmesg | grep ttyUSB
 
 #The results should show a CP210x UART to USB bridge attached to a USB port.  Below the port is ttyUSB0.
 
@@ -24,15 +24,25 @@ esptool.py --port /dev/ttyUSB0 flash_id
 #Expected outcome of the first command
 
 esptool.py v2.0.1
+
 Connecting........_
+
 Detecting chip type... ESP32
+
 Chip is ESP32D0WDQ6 (revision 0)
+
 Uploading stub...
+
 Running stub...
+
 Stub running...
+
 Manufacturer: c8
+
 Device: 4016
+
 Detected flash size: 4MB
+
 Hard resetting...
 
 #Before uploading the firmware it is recommended to erase the ESP32, which can also be done with the ESPTool:
@@ -55,13 +65,31 @@ sudo pip3 install rshell
 
 #This simple program will run on the Raspberry Pi and allow you to access the REPL terminal on the ESP32.  It also provides file management to transfer and manipulate files on both the Pi and the ESP32.  To start rshell, type rshell and specify 30 for the buffer size and your USB port:
 
-/home/ankita/Documents/micropython>rshell --buffer-size=30 -p /dev/ttyUSB0 
+pi@raspberrypi:~/Desktop/Ankita $ rshell --buffer-size=30 -p /dev/ttyUSB0
 
-#The first prompt can be used to execute file commands. We enter the shell through which we can dump files onto esp32The output looks like:  #The boot.py file is automatically run at startup and contains low level code to set up the board and finish booting.  You typically don’t want to edit it.  However, you can add a file called main.py if you need your own code to run at start up after the boot.py.
+#The first prompt can be used to execute file commands. We enter the shell through which we can dump files onto esp32The output looks like:  
+
+Using buffer-size of 30
+
+Connecting to /dev/ttyUSB0 (buffer-size 30)...
+
+Testing if ubinascii.unhexlify exists ... Y
+
+Retrieving root directories ... /boot.py/ /ConnectWifi.py/ /post_request.py/ /simple.py/ /mqtt.py/ /localhost.py/ /app.py/ /umqtt/ /www/ /hc2.png/ /CNAME/ /main.py/ /microWebSrv.py/ /microWebTemplate.py/ /LICENSE.md/ /microWebSocket.py/ /mosquitto-1.5.8/ /dht_web.py/ /dht.html/ /huewheel.min.js/ /start.py/ /led_web.py/ /led.html/
+
+Setting time ... Mar 10, 2019 10:38:00
+
+Evaluating board_name ... pyboard
+
+Retrieving time epoch ... Jan 01, 2000
+
+Welcome to rshell. Use Control-D (or the exit command) to exit rshell.
+
+/home/pi/Desktop/Ankita> 
 
 #Type repl to open the MicroPython programing environment.  The terminal will now accept Python code.  For example, print hello world, outputs hello world.
 
-/home/ankita/Documents/micropython>repl
+/home/pi/Desktop/Ankita> repl
 
 #The output:
 
@@ -77,11 +105,29 @@ Hello World
 
 #Back in rshell type ctrl-X if you are still in the REPL to exit back to the main rshell terminal.  Navigate to the folder where the program is saved.  You can use cd and ls just like in a regular terminal.  Then use cp to copy the program file to the ESP32 which is specified with /pyboard:
 
-/home/ankita/Documents/micropython> cp post_request.py /pyboard
+/home/pi/Desktop/Ankita> cp ConnectWifi.py /pyboard
 
-#Type repl to return the REPL and type import rgb to run the rgb.py program.
 
-/home/ankita/Documents/micropython> repl
+#Type repl to return the REPL and type import ConnectWifi to run the ConnectWifi.py program.
+
+Entering REPL. Use Control-X to exit.
+>
+MicroPython v1.10-168-g62483bb95 on 2019-03-05; ESP32 module with ESP32
+Type "help()" for more information.
+>>> 
+>>> import ConnectWifi
+
+#output:
+
+('192.168.0.127', '255.255.255.0', '192.168.0.1', '192.168.0.1')
+
+
+
+#Similarly running a http post request to the localhost server of Raspberry Pi
+
+/home/pi/Desktop/Ankita> cp post_request.py /pyboard
+
+/home/pi/Desktop/Ankita> repl
 Entering REPL. Use Control-X to exit.
 >
 MicroPython v1.9.1-218-g56f05137 on 2017-07-01; ESP32 module with ESP32
@@ -91,21 +137,11 @@ Type "help()" for more information.
 
 #Since this is a code to post http requests. The output looks as follows:
 
-POST!!!
-201
-b'Created'
-{
-  "id": 101
-}
-{'id': 101}
+
 GET!!!!
 {
-  "userId": 1,
-  "id": 1,
-  "title": "quidem molestiae enim"
+  "message": "Hello!"
 }
-{'id': 1, 'userId': 1, 'title': 'quidem molestiae enim'}
-200
 b'OK'
 
 
