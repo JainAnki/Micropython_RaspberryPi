@@ -17,8 +17,12 @@ pi@raspberrypi:~/Desktop/Ankita $ dmesg | grep ttyUSB
 
 [ 3636.546701] usb 1-3: cp210x converter now attached to ttyUSB0
 
-#The ESPTool flash_id command can be used to ensure everything is working.The port name returned by the dmesg command above.
+#To burn the firmware
 
+esptool.py --port /dev/ttyUSB0 write_flash 0x1000 esp32-20190306-v1.10-16
+
+#The ESPTool flash_id command can be used to ensure everything is working.The port name returned by the dmesg command above.
+esptool.py --port /dev/ttyUSB0 write_flash 0x1000 esp32-20190306-v1.10-16
 esptool.py --port /dev/ttyUSB0 flash_id
 
 #Expected outcome of the first command
