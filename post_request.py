@@ -1,6 +1,6 @@
 import urequests
-
-response = urequests.get('http://""IP ADDRESS OF THE SERVER(in this case Raspberry pi)')
+#ENTER IP ADDRESS OF THE SERVER(in this case Raspberry pi)
+response = urequests.get('http:// ')
 print("GET!!!!")
 #print(type(response))
 print(response.text)
